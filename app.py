@@ -2,6 +2,7 @@ import streamlit as st
 #標準機能以外の独自UIや外部コードを埋め込む機能
 import streamlit.components.v1 as components
 import html
+import json
 
 #タイトル
 st.title("KP用コピペツール")
@@ -29,11 +30,11 @@ if uploaded_file is not None:
 
     for i, line in enumerate(lines, start=1):
         safe_line=html.escape(line)
+        js_line=json.dumps(line)
 
         components.html(
             f"""
             <button
-                <!-- 各行をボタン化 -->
                 onclick="navigator.clipboard.writeText(`{safe_line}`)"
                 style="
                     display:block;

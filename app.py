@@ -32,10 +32,18 @@ if uploaded_file is not None:
         safe_line=html.escape(line)
         js_line=json.dumps(line)
 
+        # ===============================
+        # HTML部分：ボタン表示、コピー処理、通知表示まとめて作る
+        # ===============================
         components.html(
             f"""
             <button
-                onclick="navigator.clipboard.writeText(`{safe_line}`)"
+                onclick='
+                    navigator.clipboard.writeText({js_line});
+                    const msg=document.getElementById("copy-msg-{i}");
+                    msg.innerText="コピーしました";
+                    setTimeout(()=> msg.innerText="",1200);
+                '
                 style="
                     display:block;
                     width:100%;
@@ -50,6 +58,9 @@ if uploaded_file is not None:
             >
                 {i}.{safe_line}
         </button>
+
+        <div id="copy-msg-{i}" style="font-size:12px; color:gray; height:18px;">
+        </div>
         """,
-        height=50
+        height=75
         )
